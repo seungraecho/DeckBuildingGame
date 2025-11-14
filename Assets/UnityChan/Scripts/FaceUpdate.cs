@@ -45,7 +45,7 @@ namespace UnityChan
 			} else if (!isKeepFace) {
 				current = Mathf.Lerp (current, 0, delayWeight);
 			}
-			anim.SetLayerWeight (1, current);
+			//anim.SetLayerWeight (1, current);
 		}
 	 
 
@@ -71,7 +71,7 @@ namespace UnityChan
 		{
 			isKeepFace = true;
 			current = 1;
-			anim.CrossFade (str, 0);
+			//anim.CrossFade (str, 0);
 		}
 	}
 }
