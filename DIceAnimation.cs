@@ -5,12 +5,11 @@ public class DIceAnimation : MonoBehaviour
 
     Transform diceTransform;
 
+    public Outline OutlineComponent;
+
     private float _diceTransformRotationX;
-
     private float _diceTransformRotationY;
-
     private float _diceTransformRotationZ;
-
 
     Vector3 _diceTransformPosition;
 
@@ -18,20 +17,17 @@ public class DIceAnimation : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
 
         diceTransform = GetComponent<Transform>();
 
 
         _diceTransformPosition = diceTransform.position;
-
-
-
         _diceTransformRotationX = 0;
-
         _diceTransformRotationY = 0;
-
         _diceTransformRotationZ = 0;
+
+
+        OutlineComponent.enabled = false;
 
     }
 
@@ -54,27 +50,23 @@ public class DIceAnimation : MonoBehaviour
         _diceTransformPosition.z = _diceTransformRotationZ;
 
 
+
         diceTransform.rotation = Quaternion.Euler(_diceTransformPosition);
 
-
-
-
-        
     }
-
-
 
     private void OnMouseEnter()
     {
+        OutlineComponent.enabled = true;
+
         print("Mouse is On Dice.");
     }
 
     private void OnMouseExit() 
-    { 
+    {
+        OutlineComponent.enabled = false;
         print("Mouse left on Dice."); 
     }
-
-
 
     private void OnMouseDown()
     {
