@@ -5,11 +5,11 @@ public class DIceAnimation : MonoBehaviour
 
     Transform diceTransform;
 
-    private int _diceTransformRotationX;
+    private float _diceTransformRotationX;
 
-    private int _diceTransformRotationY;
+    private float _diceTransformRotationY;
 
-    private int _diceTransformRotationZ;
+    private float _diceTransformRotationZ;
 
 
     Vector3 _diceTransformPosition;
@@ -38,12 +38,12 @@ public class DIceAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        _diceTransformRotationX = _diceTransformRotationX + 1;
 
-        _diceTransformRotationY += 1;
+        _diceTransformRotationX = _diceTransformRotationX + 300 * Time.deltaTime;
 
-        _diceTransformRotationZ += 1;
+        _diceTransformRotationY += 300 * Time.deltaTime;
+
+        _diceTransformRotationZ += 300 * Time.deltaTime;
 
 
 
@@ -58,8 +58,6 @@ public class DIceAnimation : MonoBehaviour
 
 
 
-        OnMouseEnter();
-
 
         
     }
@@ -69,6 +67,11 @@ public class DIceAnimation : MonoBehaviour
     private void OnMouseEnter()
     {
         print("Mouse is On Dice.");
+    }
+
+    private void OnMouseExit() 
+    { 
+        print("Mouse left on Dice."); 
     }
 
 
