@@ -8,6 +8,8 @@ public class RollDiceButton : MonoBehaviour
 
     public DiceMachine diceMachine;
 
+    public GamePauseSystem pauseSystem;
+
     public Transform playerTransform;
 
     public Transform rollcubeTransform;
@@ -26,23 +28,21 @@ public class RollDiceButton : MonoBehaviour
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
-            {
                 playerTransform = playerObj.transform;
-            }
         }
     }
 
     void Update()
     {
         if (playerTransform != null)
-        {
             rollcubeTransform.position = playerTransform.position + new Vector3(3f, 7f, 0f);
-        }
+        if (pauseSystem.isGamePaused)
+            outline.enabled = false;
     }
 
     void OnMouseDown()
     {
-        if (!ruleMaster.isAttacking)
+        if (!ruleMaster.isAttacking && !pauseSystem.isGamePaused)
         {
             if (diceMachine.IsRolling || RollNum > -1)
             {

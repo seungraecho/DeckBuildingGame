@@ -5,6 +5,8 @@ public class DIceAnimation : MonoBehaviour
     public Transform playerTransform;
     Transform diceTransform;
 
+    public GamePauseSystem pauseSystem;
+
     public int myIndex;
 
     public Outline outline;
@@ -53,7 +55,7 @@ public class DIceAnimation : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!diceMachine.IsRolling && !gameRuleMaster.isAttacking)
+        if (!diceMachine.IsRolling && !gameRuleMaster.isAttacking && !pauseSystem.isGamePaused)
             outline.enabled = true;
     }
 
@@ -64,7 +66,7 @@ public class DIceAnimation : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (diceMachine.IsRolling || gameRuleMaster.isAttacking) return;
+        if (diceMachine.IsRolling || gameRuleMaster.isAttacking || pauseSystem.isGamePaused) return;
 
         if (diceMachine.IsMouseClickedCount)
         {

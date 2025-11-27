@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +8,8 @@ public class Startmenu : MonoBehaviour
 {
     [SerializeField]
     private Image fadeImage;
+    [SerializeField]
+    private Image fadeImage2;
     public AudioSource clickSound;
     public GameRuleMaster gameRuleMaster;
 
@@ -17,29 +20,33 @@ public class Startmenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        if (fadeImage2 != null)
+            fadeImage2.gameObject.SetActive(false);
         StartCoroutine(FadeIn());
     }
 
-    public void LoadInGameScene()
+    public void LoadInGameScene(bool menu = false)
     {
         Debug.Log("Game Start");
         if (!_isAudioPlayed)
         {
-            clickSound.Play();
+            if(clickSound != null)
+                clickSound.Play();
             _isAudioPlayed = true;
         }
-        StartCoroutine(FadeOut(false));
+        StartCoroutine(FadeOut(false, menu));
     }
 
-    public void GameQuit()
+    public void GameQuit(bool menu = false)
     {
         Debug.Log("Game Quit");
         if (!_isAudioPlayed)
         {
-            clickSound.Play();
+            if (clickSound != null)
+                clickSound.Play();
             _isAudioPlayed = true;
         }
-        StartCoroutine(FadeOut(true));
+        StartCoroutine(FadeOut(true, menu));
     }
 
     public void Defeat()
@@ -82,28 +89,52 @@ public class Startmenu : MonoBehaviour
         fadeImage.gameObject.SetActive(false);
     }
 
-    private IEnumerator FadeOut(bool quit)
+    private IEnumerator FadeOut(bool quit, bool menu = false)
     {
         Debug.Log("quit: " + quit);
         Debug.Log("inGame: " + inGame);
-        fadeImage.gameObject.SetActive(true);
-        float fadeInTimer = 0f;
-        Color color = fadeImage.color;
-
-        color.a = 0f;
-        fadeImage.color = color;
-
-        while (fadeInTimer < fadeDuration)
+        if (menu)
         {
-            fadeInTimer += Time.deltaTime;
-            color.a = Mathf.Lerp(0f, 1f, fadeInTimer / fadeDuration);
+            fadeImage2.gameObject.SetActive(true);
+            float fadeInTimer = 0f;
+            Color color = fadeImage2.color;
+
+            color.a = 0f;
+            fadeImage2.color = color;
+
+            while (fadeInTimer < fadeDuration)
+            {
+                fadeInTimer += Time.deltaTime;
+                color.a = Mathf.Lerp(0f, 1f, fadeInTimer / fadeDuration);
+                fadeImage2.color = color;
+
+                yield return null;
+            }
+
+            color.a = 1f;
+            fadeImage2.color = color;
+        }
+        else
+        {
+            fadeImage.gameObject.SetActive(true);
+            float fadeInTimer = 0f;
+            Color color = fadeImage.color;
+
+            color.a = 0f;
             fadeImage.color = color;
 
-            yield return null;
-        }
+            while (fadeInTimer < fadeDuration)
+            {
+                fadeInTimer += Time.deltaTime;
+                color.a = Mathf.Lerp(0f, 1f, fadeInTimer / fadeDuration);
+                fadeImage.color = color;
 
-        color.a = 1f;
-        fadeImage.color = color;
+                yield return null;
+            }
+
+            color.a = 1f;
+            fadeImage.color = color;
+        }
 
         if (inGame && quit)
         {
