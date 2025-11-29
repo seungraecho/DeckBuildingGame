@@ -4,14 +4,18 @@ public class RollDiceButton : MonoBehaviour
 {
     public Outline outline;
 
+    public GameRuleMaster ruleMaster;
+
     public DiceMachine diceMachine;
+
+    public GamePauseSystem pauseSystem;
 
     public Transform playerTransform;
 
     public Transform rollcubeTransform;
 
-    public int RollNum = 10;
-    public bool isRollDiceButtonClicked = false;
+    public int RollNum = 5;
+    public bool noRolls = false;
 
     void Start()
     {
@@ -24,44 +28,32 @@ public class RollDiceButton : MonoBehaviour
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
-            {
                 playerTransform = playerObj.transform;
-            }
         }
     }
 
     void Update()
     {
         if (playerTransform != null)
-        {
             rollcubeTransform.position = playerTransform.position + new Vector3(3f, 7f, 0f);
-        }
+        if (pauseSystem.isGamePaused)
+            outline.enabled = false;
     }
 
     void OnMouseDown()
     {
-
-        Debug.Log("IsRolling, RollNum : " + diceMachine.IsRolling + RollNum );
-
-
-
-        if (diceMachine.IsRolling || RollNum > -1)
+        if (!ruleMaster.isAttacking && !pauseSystem.isGamePaused)
         {
             if (diceMachine.IsRolling || RollNum > -1)
             {
-                RollNum--;
-
                 Debug.Log("Rolling is Start, RollNUM : " + RollNum);
+                diceMachine.ToggleDiceState();
             }
-
-            isRollDiceButtonClicked = true;
-
-            diceMachine.ToggleDiceState();
-        }
-        else
-        {
-            Debug.Log(RollNum);
-            Debug.Log("No rolls left!");
+            else
+            {
+                noRolls = true;
+                Debug.Log("No rolls left!");
+            }
         }
     }
 

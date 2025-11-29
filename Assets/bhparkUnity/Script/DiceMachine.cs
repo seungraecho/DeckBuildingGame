@@ -1,16 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.InputSystem;
-using UnityEditor.SceneManagement;
 
 public class DiceMachine : MonoBehaviour
 {
-    public bool playerInput = true;
     public List<DIceAnimation> diceAnimations;
 
     public Transform playerTransform;
+
+    public RollDiceButton diceButton;
 
     public List<int> diceValue;
     public int diceNum = 3;
@@ -25,17 +22,17 @@ public class DiceMachine : MonoBehaviour
     void Start()
     {
         diceValue = new List<int>();
-        StartRollingState();
+        StartRollingState(true);
     }
 
     void Update()
     {
-        if (playerInput && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             ToggleDiceState();
         }
 
-        if (playerInput && Input.GetKeyDown(KeyCode.Alpha7))
+        if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             playerSelectDiceCount = 300;
             Debug.Log("Player selected dice value: " + playerSelectDiceCount);
@@ -60,12 +57,22 @@ public class DiceMachine : MonoBehaviour
         }
         else
         {
-            StartRollingState();
+            StartRollingState(false);
         }
     }
 
-    public void StartRollingState()
+    public void StartRollingState(bool FirstRoll)
     {
+        if (diceButton.noRolls) return;
+        if (!FirstRoll)
+        {
+            diceButton.RollNum -= 1;
+            if (diceButton.RollNum < 0)
+            {
+                diceButton.noRolls = true;
+                return;
+            }
+        }
         IsRolling = true;
         IsMouseClickedCount = false;
         playerSelectDiceCount = 0;
@@ -92,7 +99,10 @@ public class DiceMachine : MonoBehaviour
 
     public void OnDiceClicked(int index)
     {
-        if (IsMouseClickedCount) return;
+        if (IsMouseClickedCount || diceButton.noRolls)
+        {
+            return;
+        }
 
         if (index >= 0 && index < diceValue.Count)
         {

@@ -1,12 +1,11 @@
-using System.Runtime.CompilerServices;
-using UnityEditor.Overlays;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class DIceAnimation : MonoBehaviour
 {
     public Transform playerTransform;
     Transform diceTransform;
+
+    public GamePauseSystem pauseSystem;
 
     public int myIndex;
 
@@ -19,6 +18,8 @@ public class DIceAnimation : MonoBehaviour
     public AudioSource DiceShake;
     public AudioSource DicePosition;
     public AudioSource DiceSelected;
+    public AudioSource DeniedSound;
+    private bool ShakingAudioPlay = false;
 
     private float _diceTransformRotationX;
     private float _diceTransformRotationY;
@@ -54,7 +55,7 @@ public class DIceAnimation : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!diceMachine.IsRolling && !gameRuleMaster.isAttacking)
+        if (!diceMachine.IsRolling && !gameRuleMaster.isAttacking && !pauseSystem.isGamePaused)
             outline.enabled = true;
     }
 
@@ -65,11 +66,13 @@ public class DIceAnimation : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (diceMachine.IsRolling) return;
+        if (diceMachine.IsRolling || gameRuleMaster.isAttacking || pauseSystem.isGamePaused) return;
 
-        if (gameRuleMaster.isAttacking) return;
-
-        if (diceMachine.IsMouseClickedCount) return;
+        if (diceMachine.IsMouseClickedCount)
+        {
+            DeniedSound.Play();
+            return;
+        }
 
         PlayAudio(2);
         diceMachine.OnDiceClicked(myIndex);
@@ -77,7 +80,8 @@ public class DIceAnimation : MonoBehaviour
 
     public void RestartRolling()
     {
-        PlayAudio(0);
+        if (ShakingAudioPlay) PlayAudio(0);
+        ShakingAudioPlay = true;
     }
 
     public void SetDiceFinalRotation(int diceValue)
@@ -104,21 +108,17 @@ public class DIceAnimation : MonoBehaviour
 
     public void PlayAudio(int Getnum)
     {
-        // 현재 DiceShake(주사위 굴러가는 소리)는 짜쳐서 안 넣음
-
-        if (Getnum == 1)
+        if (Getnum == 0)
         {
-            if (!DicePosition.isPlaying)
-            {
-                DicePosition.Play();
-            }
+            DiceShake.Play();
+        }
+        else if (Getnum == 1)
+        {
+            DicePosition.Play();
         }
         else if (Getnum == 2)
         {
-            if (!DiceSelected.isPlaying)
-            {
-                DiceSelected.Play();
-            }
+            DiceSelected.Play();
         }
     }
 }
