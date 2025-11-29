@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameRuleMaster : MonoBehaviour
-{ 
+{
     public GameObject DiceMachine;
 
     public GameObject ItemManager;
@@ -38,6 +39,12 @@ public class GameRuleMaster : MonoBehaviour
     public AudioSource Victorytriumph;
     public ParticleSystem attackEffect;
 
+    public TextMeshProUGUI defeatText;
+    public TextMeshProUGUI winText;
+
+    private float _time0 = 0;
+    private float _time1 = 0;
+
     void Start()
     {
         Debug.Log("GameRuleMaster::Start()");
@@ -49,6 +56,11 @@ public class GameRuleMaster : MonoBehaviour
         }
         BGM.Play();
         Debug.Log("Game Rule Master is Running");
+
+
+        defeatText.gameObject.SetActive(false);
+        winText.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -66,10 +78,36 @@ public class GameRuleMaster : MonoBehaviour
 
 
         //// If Roll Dice RollNum is 0 . Defeat.
-        if(diceButton.RollNum == -1  )
+        if (diceButton.RollNum == -1)
         {
 
-            SceneManager.LoadScene("DefeatScene");
+            defeatText.gameObject.SetActive(true);
+
+            _time0 += Time.deltaTime;
+
+            if (_time0 > 2.0f)
+            {
+
+                SceneManager.LoadScene("StartMenu");
+            }
+
+
+        }
+
+        Debug.Log("currentStage: " + currentStage);
+        Debug.Log("diceButton.RollNum: " + diceButton.RollNum);
+
+        if (currentStage == 4)
+        {
+            winText.gameObject.SetActive(true);
+
+            _time0 += Time.deltaTime;
+
+            if (_time0 > 10.0f)
+            {
+
+                SceneManager.LoadScene("StartMenu");
+            }
 
         }
     }
