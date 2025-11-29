@@ -24,7 +24,6 @@ public class GameRuleMaster : MonoBehaviour
     private float timer = 0f;
 
     public AniController playerAnimator;
-
     public Startmenu startmenu;
 
     public List<DIceAnimation> dIceAnimations;
@@ -36,6 +35,10 @@ public class GameRuleMaster : MonoBehaviour
     public AudioSource Victorytriumph;
     public ParticleSystem MagicCircle;
     public ParticleSystem attackEffect;
+    public GameObject selectDice;
+    public GameObject rerollCube;
+    public GameObject turnCube;
+
 
     void Start()
     {
@@ -68,6 +71,14 @@ public class GameRuleMaster : MonoBehaviour
             StartCoroutine(PlayerAttack(diceMachine.playerSelectDiceCount));
             diceMachine.playerSelectDiceCount = 0;
         }
+
+        if (diceButton.isInputBlocked) 
+            return;
+        if (Input.GetMouseButtonDown(0) && turnCube.activeSelf)
+        {
+            turnCube.SetActive(false);
+            playerAnimator.firstTutorial = false;
+        }
     }
 
     public void GameEnd()
@@ -78,6 +89,8 @@ public class GameRuleMaster : MonoBehaviour
     private IEnumerator PlayerAttack(int count)
     {
         inBattle = true;
+        if (playerAnimator.firstTutorial)
+            selectDice.SetActive(false);
         isAttacking = true;
         playerAnimator.AttackAni();
         MagicCircle.Play();
@@ -149,6 +162,9 @@ public class GameRuleMaster : MonoBehaviour
         {
             diceButton.noRolls = true;
         }
+        
+        if (playerAnimator.firstTutorial)
+            rerollCube.SetActive(true);
 
         isAttacking = false;
     }

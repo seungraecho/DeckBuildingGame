@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RollDiceButton : MonoBehaviour
@@ -14,8 +15,15 @@ public class RollDiceButton : MonoBehaviour
 
     public Transform rollcubeTransform;
 
+    public GameObject selectDice;
+    public GameObject turnCube;
+    public GameObject rerollCube;
+    public GameObject decisionCube;
+
     public int RollNum = 5;
     public bool noRolls = false;
+    private int firstTutorial = 1;
+    public bool isInputBlocked = false;
 
     void Start()
     {
@@ -44,6 +52,20 @@ public class RollDiceButton : MonoBehaviour
     {
         if (!ruleMaster.isAttacking && !pauseSystem.isGamePaused)
         {
+            if (firstTutorial == 1)
+            {
+                decisionCube.SetActive(false);
+                selectDice.SetActive(true);
+                firstTutorial += 1;
+            }
+            else if (firstTutorial == 2)
+            {
+                selectDice.SetActive(false);
+                rerollCube.SetActive(false);
+                turnCube.SetActive(true);
+                StartCoroutine(BlockInputRoutine());
+                firstTutorial = 0;
+            }
             if (diceMachine.IsRolling || RollNum > -1)
             {
                 Debug.Log("Rolling is Start, RollNUM : " + RollNum);
@@ -65,5 +87,11 @@ public class RollDiceButton : MonoBehaviour
     private void OnMouseExit()
     {
         outline.enabled = false;
+    }
+    private IEnumerator BlockInputRoutine()
+    {
+        isInputBlocked = true;
+        yield return null;
+        isInputBlocked = false;
     }
 }

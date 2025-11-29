@@ -4,11 +4,13 @@ using UnityEngine;
 public class AniController : MonoBehaviour
 {
     private Animator anim;
+    public GameObject decisionDice;
     public AudioSource footstepAudio;
     public AudioSource jumpAudio;
     public AudioSource kirat;
     public float moveSpeed = 5.0f;
     public bool isMoving = false;
+    public bool firstTutorial = true;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,6 +47,10 @@ public class AniController : MonoBehaviour
             footstepAudio.Stop();
         }
         anim.SetBool("NextStage", false);
+        if (firstTutorial)
+        {
+            decisionDice.SetActive(true);
+        }
         isMoving = false;
     }
 
