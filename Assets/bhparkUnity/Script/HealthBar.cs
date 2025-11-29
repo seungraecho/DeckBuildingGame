@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class HealthBar : MonoBehaviour
@@ -11,6 +12,8 @@ public class HealthBar : MonoBehaviour
     public Transform parentTransform;
 
     public Transform myTransform;
+
+    public TextMeshPro hpText;
 
     private float HpBarScaleX;
     private float preRatio;
@@ -31,9 +34,7 @@ public class HealthBar : MonoBehaviour
 
         if(first || (preRatio != hpRatio))
         {
-            Debug.Log("HPRatio == " + hpRatio);
-            Debug.Log("MAXHP == " + monster.MaxHP);
-            Debug.Log("HP == " + monster.monsterHP);
+            hpText.text = $"{monster.monsterHP} / {monster.MaxHP}";
             preRatio = hpRatio;
             first = false;
         }
