@@ -10,6 +10,13 @@ EditorBuildSettings:
     guid: 7f6f6e65fbdcdc44db8b1da70ad62d55
   - enabled: 1
     path: Assets/Scenes/Background.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/store.unity
+    guid: b23015d91f6b5c64780288ade5c3081c
+  - enabled: 1
+    path: Assets/Scenes/NextSceneTest.unity
+    guid: 363faf87dcdff36489df6243037e795e
     guid: 4bef131deb247f941802b2ade34687ac
   - enabled: 1
     path: Assets/Scenes/DefeatScene.unity
