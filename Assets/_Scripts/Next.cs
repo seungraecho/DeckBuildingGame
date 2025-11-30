@@ -1,10 +1,13 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Next : MonoBehaviour
 {
-    public void LoadIngameScene()
+    public GameObject UIObject;
+
+    public void MyFunction()
     {
-        SceneManager.LoadScene("store");
+        //UI È°¼ºÈ­
+        UIObject.SetActive(true);
     }
 }

@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ExitButton : MonoBehaviour
 {
-    public void LoadIngameScene()
+    public GameObject UIObject;
+
+    public void MyFunction()
     {
-        SceneManager.LoadScene("NextSceneTest");
+        //UI 활성화
+        UIObject.SetActive(false);
     }
 }

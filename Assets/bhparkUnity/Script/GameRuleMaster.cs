@@ -133,7 +133,7 @@ public class GameRuleMaster : MonoBehaviour
             {
                 diceButton.RollNum = 5;
                 diceMachine.StartRollingState(true);
-
+                
                 StartCoroutine(playerAnimator.NextBattle(38.0f));
 
                 yield return new WaitForSeconds(runningAnimTime);
